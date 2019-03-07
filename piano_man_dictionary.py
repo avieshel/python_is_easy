@@ -59,6 +59,36 @@ def print_dict(dictionary):
         print(key," : ", dictionary[key])
 
 # print the piano man song details
-print_dict(piano_man_dict)
+#print_dict(piano_man_dict)
 
 
+# check the guess against the dictionary
+def guess_my_details(key_guess, value_guess):
+    return key_guess in piano_man_dict and piano_man_dict[key_guess] == value_guess
+
+# check wrong key name
+assert guess_my_details("song_name", "Piano Man") is False, '"song_name" is NOT a valid key'
+# check wrong value
+assert guess_my_details("name", "november rain") is False, 'the value of "name" is NOT "november rain"'
+# check corrent key & value
+assert guess_my_details("name", "Piano Man") is True, 'the value of "name" is "Piano Man" (Capitalized)'
+# check invalid arguments
+assert guess_my_details(None, None) is False, 'invalid fucntion arguments'
+
+# play the guessing game
+def play_guessing_game():
+    user_wants_to_play = True
+    while (user_wants_to_play):
+        key_guess = input('Type in your "key" guess: ')
+        value_guess = input('Type in your "value" guess: ')
+        if guess_my_details(key_guess, value_guess) == True:
+            msg = 'Horray! consider playing the lottery today :D'
+        else:
+            msg = 'Too bad... you can try again'
+        print(msg)
+
+        play_again = input('Do you want to play again? [y/n] ')
+        if (play_again == 'n'):
+            user_wants_to_play = False
+
+play_guessing_game()
