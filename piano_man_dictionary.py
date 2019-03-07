@@ -59,7 +59,7 @@ def print_dict(dictionary):
         print(key," : ", dictionary[key])
 
 # print the piano man song details
-#print_dict(piano_man_dict)
+print_dict(piano_man_dict)
 
 
 # check the guess against the dictionary
