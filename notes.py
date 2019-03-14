@@ -91,6 +91,6 @@ if (action == 'edit' and acted_on_action == False):
         print('cannot edit line ' + line_to_edit + ' value must be between 1 and 1000')
 
 if (acted_on_action == False):
-    print('Entered option',action,'is not a valid option, please choose between "read", "delete" or "append"')
+    print('Entered option',action,'is not a valid option, please choose between "read", "delete", "append" or "edit"')
 
 
