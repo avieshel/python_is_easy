@@ -3,9 +3,12 @@
 ROWS = 6
 COLUMNS = 7
 
+# number of chips in row/column/diagonal needed for winning
+STREAK_LENGTH = 4 
+
 # global player face settings
-PLAYER_ONE = 'X'
-PLAYER_TWO = 'O'
+PLAYER_ONE = '\u2B2E' # Black vertical ellipse
+PLAYER_TWO = '\u2B2F' # White vertical ellipse
 
 # get a representation of the game board according to global size settings
 def get_empty_board():
@@ -15,9 +18,9 @@ def get_empty_board():
 def draw_board(board):
     for r in range(ROWS):
         for c in range(COLUMNS):
-            print('|',board[r][c], end='')
+            print('|',board[r][c],'', end='')
         print('|') # draw the last vertical seperator and a newline
-        print('-' * 3 * COLUMNS + '-') # print the horizontal seperator which is '---' (3 dashes per column) and on to close off the line
+        print('-' * 4 * COLUMNS + '-') # print the horizontal seperator which is '---' (3 dashes per column) and on to close off the line
  
 
 def play(player1, player2, board):
@@ -49,7 +52,7 @@ def get_player_input(player, board):
     done = False
     while not done:
         # prompt user for input and cast to integer
-        column_string = input('Player ' + player + ' Select colum to play [1 - ' + str(COLUMNS) +']: ')
+        column_string = input('Player ' + player + '  Select colum to play [1 - ' + str(COLUMNS) +']: ')
         try:
             column = int(column_string)
             column -= 1 # we need to convert user input [1:COLUMNS] =>to array values [0:COLUMNS-1]
@@ -66,13 +69,13 @@ def check_board(board):
     for r in range(ROWS):
         for c in range(COLUMNS):
             if check_four_in_column(r,c,board) == True:
-                return print('Winner! 4 in column')
+                return print('Winner!',STREAK_LENGTH,'in column')
             if check_four_in_row(r,c,board) == True:
-                return print('Winner! 4 in a row')
+                return print('Winner!',STREAK_LENGTH,'in a row')
             if check_four_in_diagonal_bottom_left(r,c,board) == True:
-                return print('Winner! diagonal bottom left to top right')
+                return print('Winner!',STREAK_LENGTH,'diagonal bottom left to top right')
             if check_four_in_diagonal_top_left(r,c,board) == True:
-                return print('Winner! diagonal top left to bottom right')
+                return print('Winner!',STREAK_LENGTH,'diagonal top left to bottom right')
     return False # check the whole board, no winner yet
 
 
@@ -86,54 +89,47 @@ def put_chip_at_column(player, column, board):
     row -= 1
     board[row][column] = player
 
-# return true if there are 4 chips for the player in a row (to the right) starting at 'row','column'
+# return true if there are 4 (winning streak length) chips for the player in a row (to the right) starting at 'row','column'
 def check_four_in_row(row, column, board):
     # get the value in the starting cell
     player = board[row][column]
     if player == ' ':
         return False # starting point is empty
     # check for four in a row (left to right)
-    for i in range(1,4):
+    for i in range(1,STREAK_LENGTH):
         if column+i >= COLUMNS or board[row][column+i] != player:
             return False #one of the cells to the right is either empty, blocked by other player or out of board limits
-    return True # found 4 in a row!
+    return True # found a winning streak in a row!
 
-# return true if there are 4 chips for the player stacked in column starting at 'row', 'column'
+# return true if there are 4 (winning streak length) chips for the player stacked in column starting at 'row', 'column'
 def check_four_in_column(row, column, board):
     player = board[row][column]
     if player == ' ': 
         return False # starting point is empty
-    for i in range(1,4):
+    for i in range(1,STREAK_LENGTH):
         if row+i >= ROWS or board[row+i][column] != player:
             return False #one the the cells below is either empty, blocked by other player or out of board limitss
-    return True # found 4 in column!
+    return True # found a winnign streak in column!
 
-# return True iff there are 4 chips for the same player diagonally (top left -> bottom right) [Note: row 0 is top row!]
+# return True iff there are 4 (winning streak length) chips for the same player diagonally (top left -> bottom right) [Note: row 0 is top row!]
 def check_four_in_diagonal_top_left(row, column, board):
     player = board[row][column]
     if player == ' ':
         return False # starting point is empty
-    for i in range(1,4):
+    for i in range(1,STREAK_LENGTH):
         if row+i >= ROWS or column+i >= COLUMNS or board[row+i][column+i] != player:
             return False # one of the cells in the diagonal is either blocked by other player or out of bounds of the board
     return True
 
-# return True iff there are 4 chips for the same player diagonall (bottom left -> top right) [Note: row 0 is top row!]
+# return True iff there are 4 (winning streak length) chips for the same player diagonall (bottom left -> top right) [Note: row 0 is top row!]
 def check_four_in_diagonal_bottom_left(row, column, board):
     player = board[row][column]
     if player == ' ':
         return False # starting point is empty
-    for i in range(1,4):
+    for i in range(1,STREAK_LENGTH):
         if row-i < 0 or column+i >= COLUMNS or board[row-i][column+i] != player:
             return False # one of the cells in the diagonal is either blocked by other player or out of bounds of the board
     return True
 
-def is_empty(row, column, board):
-    return board[row][column] == ' '
-
-
 # play the game
 play(PLAYER_ONE, PLAYER_TWO, get_empty_board())
-
-
-#draw_board(get_empty_board())
