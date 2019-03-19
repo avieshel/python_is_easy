@@ -20,7 +20,7 @@ def draw_board(board):
         for c in range(COLUMNS):
             print('|',board[r][c],'', end='')
         print('|') # draw the last vertical seperator and a newline
-        print('-' * 4 * COLUMNS + '-') # print the horizontal seperator which is '---' (3 dashes per column) and on to close off the line
+        print('-' * 4 * COLUMNS + '-') # print the horizontal seperator which is '----' (4 dashes per column) and on to close off the line
  
 
 def play(player1, player2, board):
