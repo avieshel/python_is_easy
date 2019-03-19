@@ -27,7 +27,8 @@ def play(player1, player2, board):
     game_ended = False
     players = [player1, player2]
     moves_count = 0
-    while game_ended == False:
+    max_moves_per_board = ROWS * COLUMNS # consider the case the board is full but no winner found (is it at all possible?)
+    while game_ended == False and moves_count < max_moves_per_board:
         draw_board(board)
         current_player = players[moves_count % 2]
         colum_to_play = get_player_input(current_player, board)
